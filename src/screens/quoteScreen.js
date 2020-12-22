@@ -4,26 +4,12 @@
 */
 
 import * as React from 'react';
-import {StyleSheet, View, Text, TouchableOpacity, Clipboard} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {ToastAndroid, StyleSheet, View, Text, TouchableOpacity, Clipboard} from 'react-native';
 import TheySadSoQuotesService from "../services/TheySadSoQuotesService";
-import {ToastAndroid} from 'react-native';
 
 export default class QuoteScreen extends React.Component {
     static navigationOptions = {
-        title: 'They said so quotes',
-        headerRight: (
-            <View style={{marginRight: 20}}>
-                <TouchableOpacity
-                    activeOpacity={1}>
-                    <Icon
-                        name="reload"
-                        size={30}
-                        color="#900"
-                    />
-                </TouchableOpacity>
-            </View>
-        ),
+        title: 'They said so quotes'
     };
 
     state = {
@@ -44,7 +30,7 @@ export default class QuoteScreen extends React.Component {
                 {
                     this.state.quote ?
                         <TouchableOpacity
-                            onPress={() =>{
+                            onPress={() => {
                                 Clipboard.setString(this.state.quote.author);
                                 Clipboard.setString(this.state.quote.quote);
 
@@ -66,7 +52,9 @@ export default class QuoteScreen extends React.Component {
                             </Text>
                         </TouchableOpacity>
                         :
-                        <Text>TheySaidSo Quote Screen</Text>
+                        <Text style={{justifyContent: 'center', alignSelf: 'center'}}>
+                            They said so quote of the day is loading...
+                        </Text>
                 }
             </View>
         );
@@ -82,6 +70,11 @@ export default class QuoteScreen extends React.Component {
             });
         }).catch((err) => {
             console.log(err);
+            ToastAndroid.showWithGravity(
+                err.message,
+                ToastAndroid.SHORT,
+                ToastAndroid.CENTER,
+            );
         });
     };
 }
